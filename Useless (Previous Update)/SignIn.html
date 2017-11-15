@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Disease Details</title>
+		<title>Hospital System - SignIn</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -21,22 +21,33 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="inner">
+
 						</div>
 					</header>
 
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<ul class="actions">
-									<li>
-										<a href="DiseaseList.html">
-											<input type="submit" value="Back to Disease List" class="special" />
-										</a>
-									</li>
-							</ul>
-							<h1>Disease Name</h1>
-							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
-							<p>Disease Details</p>
+							<header>
+								<div class="inner">
+									<section>
+										<h1><center>Sign In to Hospital System</center></h1>
+										<form method="post" action="DoctorView.html">
+											<div class="field">
+												<input type="email" name="email" id="email" placeholder="Email" required/>
+											</div>
+											<div class="field">
+												<textarea name="message" id="message" placeholder="Password" required></textarea>
+											</div>
+											<ul class="actions">
+												<center><li><input type="submit" value="Welcome" class="special"/></li></center>
+											</ul>
+										</form>
+									</section>
+								</div>
+
+								<center><p>New to Site? <a href="SignUp.html">Create an Account</a></p></center>
+							</header>
 						</div>
 					</div>
 			</div>
