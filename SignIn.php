@@ -2,7 +2,7 @@
 	session_start();
 	if(isset($_SESSION['userSession'])!="")
 	{
-		header("Location: DoctorView.html");
+		header("Location: PendingApproval.php");
 	}
 	include_once 'DatabaseConnect.php';
 
@@ -17,9 +17,31 @@
 		// If password match the database selected based on username
 		if(password_verify($password, $row['password'])){
 			$_SESSION['userSession'] = $row['id'];
-			header("Location: DoctorView.html");
+			header("Location: PendingApproval.php");
 		}
-		else{
+		
+		if($row['level'] == 1)
+		{
+			header("Location: DoctorView.php"); 
+		}
+		
+		else if ($row['level'] == 2)
+		{
+			header("Location: NurseView.php");
+		}
+		
+		else if ($row['level'] == 3)
+		{
+			header("Location: admin.php");
+		}
+		
+		else if ($row['level'] > 3)
+		{
+			header ("Location:PendingApproval.php");
+		}
+		
+		else
+		{
 			$msg = "<center>
 						<div class='alert alert-danger'>
 							<span class='glyphicon glyphicon-info-sign'></span> &nbsp;
@@ -49,14 +71,8 @@
 	<body>
 		<!-- Wrapper -->
 			<div id="wrapper">
-
-				<!-- Header -->
-					<header id="header">
-						<div class="inner">
-
-						</div>
-					</header>
-
+				<br><br><br><br>
+			
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
