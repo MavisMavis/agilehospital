@@ -11,59 +11,79 @@
         $username = $MySQLi_CON->real_escape_string(trim($_POST['name']));
         $email = $MySQLi_CON->real_escape_string(trim($_POST['email']));
         $password = $MySQLi_CON->real_escape_string(trim($_POST['password']));
-        // Change password into encrypted password using hash
+		$confirmPassword = $MySQLi_CON->real_escape_string(trim($_POST['confirmpassword']));
+        
+		// Change password into encrypted password using hash
         $new_password = password_hash($password, PASSWORD_DEFAULT);
         $check_username = $MySQLi_CON->query("SELECT username FROM users WHERE username='$username'");
         $check_email = $MySQLi_CON->query("SELECT email FROM users WHERE email='$email'");
         $count=$check_username->num_rows;
         $count1=$check_email->num_rows;
 
-            // Check if the username and email is available
-        if($count==0 && $count1==0)
+        if($password == $confirmPassword)
 		{
-            $query = "INSERT INTO users(username,email,password,level) VALUES('$username','$email','$new_password','0')";
+			// Check if the username and email is available
+			if($count==0 && $count1==0)
+			{
+				$query = "INSERT INTO users(username,email,password,level) VALUES('$username','$email','$new_password','0')";
 
-            if($MySQLi_CON->query($query))
-			{
-                $msg = "<center>
-					<div class='alert alert-success'>
-						<span class='glyphicon glyphicon-info-sign'></span> &nbsp; 
-						<h2>
-							<font color='green'>
-								successfully registered !
-							</font>
-						</h2>	
-					</div>
-				</center>";
-            }
+				if($MySQLi_CON->query($query))
+				{
+					$msg = "<center>
+						<div class='alert alert-success'>
+							<span class='glyphicon glyphicon-info-sign'></span> &nbsp; 
+							<h2>
+								<font color='green'>
+									successfully registered !
+								</font>
+							</h2>	
+						</div>
+					</center>";
+				}
+				
+				else 
+				{
+					$msg = "<center>
+						<div class='alert alert-danger'>
+							<span class='glyphicon glyphicon-info-sign'></span> &nbsp; 
+							<h2>
+								<font color='orange'>
+									error while registering !
+								</font>
+							</h2>
+						</div>
+					</center>";
+				}
+			}
 			
-            else 
+			else
 			{
-                $msg = "<center>
+				$msg = "<center>
 					<div class='alert alert-danger'>
 						<span class='glyphicon glyphicon-info-sign'></span> &nbsp; 
 						<h2>
-							<font color='orange'>
-								error while registering !
+							<font color='red'>
+								sorry username or email already taken !
 							</font>
 						</h2>
 					</div>
 				</center>";
-            }
-        }
+			}
+		}
 		
-        else{
-            $msg = "<center>
-				<div class='alert alert-danger'>
-					<span class='glyphicon glyphicon-info-sign'></span> &nbsp; 
-					<h2>
-						<font color='red'>
-							sorry username or email already taken !
-						</font>
-					</h2>
-				</div>
-			</center>";
-        }
+		else
+		{
+			$msg = "<center>
+					<div class='alert alert-danger'>
+						<span class='glyphicon glyphicon-info-sign'></span> &nbsp; 
+						<h2>
+							<font color='red'>
+								Password and Confirm Password is not match !
+							</font>
+						</h2>
+					</div>
+				</center>";
+		}
     }
 ?>
 
