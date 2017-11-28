@@ -1,7 +1,35 @@
 <?php
 	session_start();
 
-	include_once 'DatabaseConnect.php';
+	include_once 'DatabaseConnect.php';	
+	
+	$id = "".$_SESSION['userSession'];
+	
+	
+	// Fetching all from current user by following the id
+	$query = $MySQLi_CON->query("SELECT * FROM users WHERE id='$id'");
+	$row = $query->fetch_array();
+
+	
+	if ($row['level'] == '1')
+	{
+		header("Location: DoctorView.php");
+	}
+	
+	else if ($row['level'] == '2')
+	{
+		header("Location: NurseView.php");
+	}
+	
+	else if ($row['level'] == '0')
+	{
+		header("Location: PendingApproval.php");
+	}
+	else if ($row['level'] == '')
+	{
+		header("Location: SignIn.php");
+	}
+
 	
 	if(isset($_POST['submit']))
 	{
@@ -45,7 +73,6 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-
 	</head>
 	<body>
 		<!-- Wrapper -->
@@ -70,10 +97,16 @@
 												<input type="text" name="id" placeholder="ID" required/>
 												
 											</div>
+											<select name="level">
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>												
+											</select>
+											<!--
 											<div class="field">
 												<input type="text" name="level" placeholder="Level" required/>
 											</div>
-											
+											-->
 											<?php 
 											if(isset($msg)){         
 												echo $msg;   
@@ -92,6 +125,7 @@
 													
 												</center>
 											</ul>
+											<center>0 - Appending Approve &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1 - Doctor &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 2- Nurse</center>
 										</form>
 										
 										
@@ -107,11 +141,40 @@
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
 
 	</body>
 </html>
+
+	<script type="text/javascript">
+		function name(){
+			// Get the modal
+			var modal = document.getElementById('myModal');
+
+			// Get the button that opens the modal
+			var btn = document.getElementById("myBtn");
+
+			// Get the <span> element that closes the modal
+			var span = document.getElementsByClassName("close")[0];
+
+			// When the user clicks the button, open the modal 
+			btn.onclick = function() {
+				modal.style.display = "block";
+			}
+
+			// When the user clicks on <span> (x), close the modal
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}	
+			}
+		}
+	</script>
 
 <?php
 
@@ -128,16 +191,38 @@ if ($result->num_rows > 0)
 									<th>ID</th>
 									<th>Name</th>
 									<th>Level</th>
+									<th>View</th>
+									<th></th>
 								</tr>';
 		// output data of each row
 		while($row = $result->fetch_assoc()) 
 		{
+			$link = 'http://localhost/Hospital%20System/delete.php?value=' . $row["id"];
+
 			echo'<tr>
-					<td>'. $row["id"] .'</td>
+					<td>'.$row["id"] .'</td>
 					<td>'.$row["username"].'</td>
 					<td>'.$row["level"].'</td>
-				</tr>';
-		}
+					<td><a href="http://localhost/Hospital%20System/UsersDetails.php?value='.$row["id"].'" class="button fit small">Profile</a></td>
+					<td>
+						<a href="'.$link.'" onclick="return confirm(\'sure to delete !\');"><img src="images/x1.png" /></a>
+					</td>';
+
+ 
+			echo '</tr>';
+				
+					/*
+						<div class="modal-content">
+							<span class="close">&times;</span>
+							
+						<a href="'.$link.'"><img src="images/x1.png" /></a>
+						
+						<a href="javascript:functionname('..')"
+						echo '<a href="?del={$row['actor_id']}" onclick="return confirm(\'sure to delete !\');">Delete</a>'. '<br><br>'; 
+
+						*/
+						
+		}	
 		
 		echo				'</table>
 						</div>
@@ -153,4 +238,3 @@ if ($result->num_rows > 0)
 	
 	$MySQLi_CON->close();
  ?>
-

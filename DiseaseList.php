@@ -71,8 +71,6 @@
 					<div id="main">
 						<div class="inner">
 							<h1>Disease List</h1>
-							<input type="text" name="search" placeholder="Search Disease....">
-							<br>
 							<section class="tiles">
 								<?php
 									$query = $MySQLi_CON->query("SELECT * FROM disease");
