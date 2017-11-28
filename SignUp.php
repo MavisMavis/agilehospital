@@ -1,10 +1,11 @@
 <?php
-    session_start();
-	if(isset($_SESSION['userSession'])!="")
-	{
-		header("Location: SignIn.php");
+	session_start();
+	include_once 'DatabaseConnect.php';	
+	
+	if(isset($_SESSION['userSession'])!=""){
+    	header("Location: DoctorView.php");
+    	exit;
 	}
-    include_once 'DatabaseConnect.php';
 	
     if(isset($_POST['submit'])) 
 	{
@@ -84,7 +85,23 @@
 					</div>
 				</center>";
 		}
-    }
+
+		
+	$query = "SELECT DISTINCT * FROM users WHERE users.username='$username'";
+
+	$result = $MySQLi_CON->query($query);
+	if ($result->num_rows > 0) {
+		if($row = $result->fetch_assoc()) {
+			$id = $row['id'];
+			$name = $row['username'];
+
+			$query = "INSERT INTO users_details(id,name,department,cellphone) VALUES('$id','$name','','')";
+			$MySQLi_CON->query($query);
+		}
+	}
+
+	}
+	$MySQLi_CON->close(); 
 ?>
 
 <html>

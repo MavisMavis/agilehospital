@@ -7,7 +7,6 @@
     	exit;
 	}
 
-
 	if(isset($_POST['login']))
 	{
 		$username = $MySQLi_CON->real_escape_string(trim($_POST['name']));

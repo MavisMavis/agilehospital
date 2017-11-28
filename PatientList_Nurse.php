@@ -15,9 +15,9 @@
 		header("Location: admin.php");  
 	}
 	
-	else if ($row['level'] == '2')
+	else if ($row['level'] == '1')
 	{
-		header("Location: NurseView.php");
+		header("Location: DoctorView.php");
 	}
 	
 	else if ($row['level'] == '0')
@@ -58,11 +58,10 @@
 
 				<!-- Menu -->
 					<nav id="menu">
-						<h2>Doctor Menu</h2>
+						<h2>Nurse Menu</h2>
 						<ul>
-							<li><a href="DoctorView.php">Home</a></li>
-							<li><a href="DiseaseList.php">Disease List</a></li>
-							<li><a href="PatientList_Doctor.php">Patient List</a></li>
+							<li><a href="NurseView.php">Home</a></li>
+							<li><a href="PatientList_Nurse.php">Patient List</a></li>
 							<li><a href="LogOut.php">Log Out</a></li>
 						</ul>
 					</nav>
@@ -71,24 +70,20 @@
 					<div id="main">
 						<div class="inner">
 							<h1>Patient List</h1>
+							<form action="" method="post">
+								<a href="AddNewPatients.php" class="button special">Add New Patients</a>
+							</form>
 							<section>
-								<?php
-								$doctorid = $id;
-								$query = $MySQLi_CON->query("SELECT * FROM patient_details WHERE doctor_id ='". $doctorid ."'");
+							<?php
+								$query = $MySQLi_CON->query("SELECT * FROM patient_details");
 								
 								while($row=$query->fetch_assoc())
 									{
-										$chk_id = $MySQLi_CON->query("SELECT patient_id FROM patient_details WHERE name='".$row["name"]."'");
-										$user_id = mysqli_fetch_assoc($chk_id);
-										$id = $user_id['patient_id'];
 										$chk_doctor = $MySQLi_CON->query("SELECT username FROM users WHERE id='".$row["doctor_id"]."'");
             							$doctor = mysqli_fetch_assoc($chk_doctor);
 										$doc_name = $doctor['username'];
-
-			
-										$link = 'http://localhost/Hospital%20System/PatientDetails_Doctor.php?value=' . $id;
 										
-										echo'<a href="'.$link.'">
+										echo'
 											<table>
 												<tr>
 													<td>
@@ -119,8 +114,8 @@
 												</tr>
 											</table>';
 									}
-							?>	
-								
+							?>
+
 							</section>
 						</div>
 					</div>
